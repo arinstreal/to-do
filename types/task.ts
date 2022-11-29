@@ -1,6 +1,6 @@
 import { User } from "./user";
 
-export type Task  = {
+export type TTask  = {
   id?: string;
   title: string;
   content?: string;

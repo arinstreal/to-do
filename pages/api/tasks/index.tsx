@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Task } from "../../../types/task";
+import { TTask } from "../../../types/task";
 import prisma from "../../../lib/prisma";
 
 //api/tasks
@@ -8,7 +8,7 @@ import prisma from "../../../lib/prisma";
 
 export default async function
   handle(req: NextApiRequest,
-         res: NextApiResponse<Task | Task[] | {error: string}>) {
+         res: NextApiResponse<TTask | TTask[] | {error: string}>) {
   const { title, content, authorId } = req.body;
 
   if (req.method === 'POST') {

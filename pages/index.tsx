@@ -1,10 +1,8 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import prisma from '../lib/prisma';
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Task } from "../types/task";
 import { useFetch } from "../hooks/useFetch";
+import { TTask } from "../types/task";
+import { Task } from '../components/Task/Task';
 
 const initialState = {
   title: "",
@@ -13,20 +11,21 @@ const initialState = {
 export default function Home() {
   const [values, setValues] = useState(initialState);
   const { data: tasks = [], sendApi: getTaskList } = useFetch({ url: 'tasks', method: 'GET' });
+  // const { isSuccess: isSuccessPublishTask } = useFetch({ url: 'tasks', method: 'POST' });
+
   useEffect(() => {
-    getTaskList();
+      getTaskList();
   }, []);
 
-  async function publishTask(task: Task): Promise<void> {
+  async function publishTask(task: TTask): Promise<void> {
     try {
       const test = await fetch(`/api/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(task),
-      });
-      console.log(test)
+      }).then();
       getTaskList();
-
+      console.log(test)
     } catch (error) {
       alert(error);
     }
@@ -46,7 +45,7 @@ export default function Home() {
     const name = event.target.name;
     setValues({ ...values, [name]: newValue });
   }
-  console.log(tasks)
+
   return (
     <div>
       <div>
@@ -65,7 +64,7 @@ export default function Home() {
       <div>
         Twoje zadania: <span>{tasks?.length || 0} </span>
         <div>
-          {tasks?.map(item => <div key={item.id}>{item.title} - {item.content}</div>)}
+          {tasks?.map(item => <Task key={item.id} id={item.id} title={item.title} isDone={item.isDone} content={item.content}/>)}
         </div>
       </div>
     </div>
